@@ -134,6 +134,7 @@ namespace IEDExplorer
                     }
                     break;
                 case scsm_MMS_TypeEnum.floating_point:
+                case scsm_MMS_TypeEnum.structure:
                     float res2 = 0;
                     if (float.TryParse(textBoxValue.Text, out res2))
                     {

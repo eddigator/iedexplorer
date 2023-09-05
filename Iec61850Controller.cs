@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace IEDExplorer
 {
@@ -161,10 +162,30 @@ namespace IEDExplorer
                     //char *nameo[] = {"$Oper$ctlVal", "$Oper$origin$orCat", "$Oper$origin$orIdent", "$Oper$ctlNum", "$Oper$T", "$Oper$Test", "$Oper$Check"};
                     if ((b = d.FindChildNode("ctlVal")) != null)
                     {
+                        // TODO check if NodeData is of type structure and copy all children nodes
+
                         NodeData n = new NodeData(b.Name);
                         n.DataType = ((NodeData)b).DataType;
-                        n.DataValue = cPar.ctlVal;
+
+
+                        // structure?
+                        if (n.DataType == scsm_MMS_TypeEnum.structure)
+                        {
+                            foreach (NodeData cld in ((NodeData)b).GetChildNodes())
+                            {
+                                NodeData ncld = new NodeData(cld.Name);
+                                ncld.DataType = ((NodeData)cld).DataType;
+                                ncld.DataValue = cPar.ctlVal;
+
+                                n.AddChild(ncld);
+                            }
+                        }
+                        else
+                        {
+                            n.DataValue = cPar.ctlVal;
+                        }
                         ndar.Add(n);
+
                     }
                     if ((b = d.FindChildNode("origin")) != null)
                     {

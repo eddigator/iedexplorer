@@ -131,6 +131,11 @@ namespace IEDExplorer
             }
         }
 
+        public void AddChild (NodeData chl)
+        {
+            _childNodes.Add(chl);
+        }
+
         internal override NodeBase FindNodeByValue(scsm_MMS_TypeEnum dataType, object dataValue, ref NodeBase ContinueAfter)
         {
             if (dataValue == null)

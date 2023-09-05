@@ -2243,6 +2243,36 @@ namespace IEDExplorer
                     case scsm_MMS_TypeEnum.integer:
                         dat_Struct.selectInteger((long)d.DataValue);
                         break;
+                    case scsm_MMS_TypeEnum.floating_point:
+                        byte[] byteval;
+                        byte[] tmp;
+                        if (d.DataValue is float)
+                        {
+                            byteval = new byte[5];
+                            tmp = BitConverter.GetBytes((float)d.DataValue);
+                            byteval[4] = tmp[0];
+                            byteval[3] = tmp[1];
+                            byteval[2] = tmp[2];
+                            byteval[1] = tmp[3];
+                            byteval[0] = 0x08;
+                        }
+                        else
+                        {
+                            byteval = new byte[9];
+                            tmp = BitConverter.GetBytes((float)d.DataValue);
+                            byteval[8] = tmp[0];
+                            byteval[7] = tmp[1];
+                            byteval[6] = tmp[2];
+                            byteval[5] = tmp[3];
+                            byteval[4] = tmp[4];
+                            byteval[3] = tmp[5];
+                            byteval[2] = tmp[6];
+                            byteval[1] = tmp[7];
+                            byteval[0] = 0x08;      // ???????????? TEST
+                        }
+                        FloatingPoint fpval = new FloatingPoint(byteval);
+                        dat_Struct.selectFloating_point(fpval);
+                        break;
                     case scsm_MMS_TypeEnum.structure:
                         List<Data> datList_Struct2 = new List<Data>();
                         MakeStruct(iecs, d.GetChildNodes(), datList_Struct2);          // Recursive call
